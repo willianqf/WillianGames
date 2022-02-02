@@ -6,11 +6,14 @@ using Platformer2D.Character;
 [RequireComponent(typeof(CharacterMovement2D))] /// INFORMA A UNITY QUE É NECESSÁRIO TER ESTE COMPONENTE
 [RequireComponent(typeof(PlayerInput))]
 [RequireComponent(typeof(CharacterFacing2D))]
+[RequireComponent(typeof(IDamageable))]
 public class PlayerController : MonoBehaviour
 {
     CharacterMovement2D playerMovement;
     CharacterFacing2D playerFacing;
     PlayerInput playerInput;
+
+    IDamageable damageable;
     // Start is called before the first frame update
     
     [Header("Camera")]
@@ -30,6 +33,13 @@ public class PlayerController : MonoBehaviour
         playerMovement = GetComponent<CharacterMovement2D>();
         playerInput = GetComponent<PlayerInput>();
         playerFacing = GetComponent<CharacterFacing2D>();
+        damageable = GetComponent<IDamageable>();
+        damageable.DeathEvent += OnDeath;
+    }
+    private void OnDestroy() {
+        if(damageable != null){
+            damageable.DeathEvent -= OnDeath;
+        }
     }
 
     // Update is called once per frame
@@ -72,6 +82,13 @@ public class PlayerController : MonoBehaviour
         currentOffsetX += playerMovement.CurrentVelocity.x * Time.fixedDeltaTime * characterSpeedInfluence;
         cameraTarget.localPosition = new Vector3(currentOffsetX, cameraTarget.localPosition.y, -cameraTarget.localPosition.z);
         //
+    }
+
+    private void OnDeath(){
+
+        playerMovement.StopImmediately(); //StopImmediately <Chama a função que para a movimentação do jogador>
+        enabled = false; //Para de tocar a função update
+
     }
 
 }

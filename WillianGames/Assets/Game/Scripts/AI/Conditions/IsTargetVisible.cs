@@ -15,13 +15,28 @@ public class IsTargetVisible : GOCondition
     private float forgetTargetTime;
     public override bool Check()
     {
+        bool isAvailable = IsAvailable();
         //Memoria do BOT
-        if (aiVision.IsVisible(target)){
+        if (aiVision.IsVisible(target) && isAvailable){
             forgetTargetTime = Time.time + targetMemoryDuration;
             return true;
         }
-        return Time.time < forgetTargetTime;
+        // RETORNA VERDADEIRO OU FALSO SE O BOT ESTIVER FORA DE VISÃO E VIVO/MORTO
+        return Time.time < forgetTargetTime && isAvailable;
         //return false;
         //return Vector2.Distance(gameObject.transform.position, target.transform.position) < 3;
+    }
+    bool IsAvailable(){
+        if (target == null)
+        {
+            return false;
+        }
+        // TROCAR ALTERNATIVA PARA GET COMPONENT
+        IDamageable damageable = target.GetComponent<IDamageable>();
+        if(damageable != null)
+        {
+            return !damageable.IsDead;
+        }
+        return true;
     }
 }
