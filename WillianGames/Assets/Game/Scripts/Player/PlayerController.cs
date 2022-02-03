@@ -13,6 +13,9 @@ public class PlayerController : MonoBehaviour
     CharacterFacing2D playerFacing;
     PlayerInput playerInput;
 
+    public IWeapon Weapon {get; private set;}
+    [SerializeField] 
+    GameObject weaponObjet;
     IDamageable damageable;
     // Start is called before the first frame update
     
@@ -35,6 +38,10 @@ public class PlayerController : MonoBehaviour
         playerFacing = GetComponent<CharacterFacing2D>();
         damageable = GetComponent<IDamageable>();
         damageable.DeathEvent += OnDeath;
+        if (weaponObjet != null)
+        {
+            Weapon = weaponObjet.GetComponent<IWeapon>();
+        }
     }
     private void OnDestroy() {
         if(damageable != null){
@@ -71,6 +78,13 @@ public class PlayerController : MonoBehaviour
             playerMovement.Crouch();
         }else if (playerInput.IsCrouchButtonUp()){
             playerMovement.UnCrouch();
+        }
+
+        /// <summary>
+        /// ATACAR
+        /// </summary>
+        if(Weapon != null && playerInput.IsAttackButtonDown()){
+            Weapon.Attack();
         }
     }
 

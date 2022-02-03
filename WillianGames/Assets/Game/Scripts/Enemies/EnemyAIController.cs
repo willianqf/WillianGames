@@ -5,10 +5,16 @@ using Platformer2D.Character;
 
 [RequireComponent(typeof(CharacterMovement2D))]
 [RequireComponent(typeof(CharacterFacing2D))]
+[RequireComponent(typeof(IDamageable))]
 public class EnemyAIController : MonoBehaviour
 {
     CharacterMovement2D enemyMovement;
     CharacterFacing2D enemyFacing;
+    IDamageable damageable;
+
+    [SerializeField]
+    private TriggerDamage damager;
+
     private Vector2 movementInput;
     public Vector2 MovementInput{
         get
@@ -31,8 +37,15 @@ public class EnemyAIController : MonoBehaviour
     {
         enemyMovement = GetComponent<CharacterMovement2D>();
         enemyFacing = GetComponent<CharacterFacing2D>();
+        damageable = GetComponent<IDamageable>();
+        damageable.DeathEvent += OnDeath;
     }
 
+    private void OnDestroy() {
+        if (damageable != null){
+            damageable.DeathEvent -= OnDeath;
+        }
+    }
     // Update is called once per frame
     void Update()
     {
@@ -44,5 +57,12 @@ public class EnemyAIController : MonoBehaviour
         movementInput.x = Mathf.Clamp(x, -1, 1); //Recebe um valor e mantem o valor entre o limite <valor, menor, maior>
     }
     */
+    private void OnDeath()
+    {
+        enabled = false;
+        enemyMovement.StopImmediately();
+        damager.gameObject.SetActive(false);
+        //Destroy(gameObject);
+    }
 
 }

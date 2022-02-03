@@ -2,32 +2,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(IDamageable))]
+[RequireComponent(typeof(PlayerController))]
 public class PlayerAnimationController : CharacterAnimationController
 {
-     private IDamageable damageable;
+     private PlayerController player;
      protected override void Awake(){
           base.Awake();
-          damageable = GetComponent<IDamageable>();
-          if (damageable != null){
-               damageable.DeathEvent += OnDeath;
-          }
+          player = GetComponent<PlayerController>();
 
      }
 
-     private void OnDestroy() {
-          if (damageable != null){
-               damageable.DeathEvent -= OnDeath;
-          }
-     }
      protected override void Update() {
           base.Update();
           animator.SetBool(CharacterMovementAnimationKeys.IsCrouching, characterMovement.IsCrouching);
           animator.SetFloat(CharacterMovementAnimationKeys.VerticalSpeed, characterMovement.CurrentVelocity.y / characterMovement.JumpSpeed);
           animator.SetBool(CharacterMovementAnimationKeys.IsGrounded, characterMovement.IsGrounded);
-     }
-
-     private void OnDeath(){
-          animator.SetTrigger(CharacterMovementAnimationKeys.TriggerDead);
+          animator.SetBool(CharacterMovementAnimationKeys.IsAttacking, player.Weapon.IsAttacking);
      }
 
 }
