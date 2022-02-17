@@ -44,6 +44,14 @@ public class CharacterAnimationController : MonoBehaviour
 
     private void OnDeath(){
         animator.SetTrigger(CharacterMovementAnimationKeys.TriggerDead);
-        Destroy(gameObject, 0.8f);
+        //Destroy(gameObject, 0.8f);
+        StartCoroutine(DesactivePlayer());
+    }
+    IEnumerator DesactivePlayer()
+    {
+        yield return new WaitForSeconds(0.8f);
+        gameObject.SetActive(false);
+        GameController.instance.CheckGameOver(gameObject);
+
     }
 }

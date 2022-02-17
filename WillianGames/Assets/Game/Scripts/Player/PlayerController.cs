@@ -9,6 +9,7 @@ using Platformer2D.Character;
 [RequireComponent(typeof(IDamageable))]
 public class PlayerController : MonoBehaviour
 {
+    public static PlayerController playercontroller;
     CharacterMovement2D playerMovement;
     CharacterFacing2D playerFacing;
     PlayerInput playerInput;
@@ -31,6 +32,22 @@ public class PlayerController : MonoBehaviour
     [Range(0.0f, 5.0f)]
     [SerializeField]
     private float characterSpeedInfluence = 2.0f;
+    
+    /// <summary>
+    /// PISCAR PLAYER
+    SpriteRenderer spriteplayer;
+    float time = 0;
+    float time2 = 0.05f;
+
+    float inv1 = 0;
+    float inv2 = 3f;
+
+    bool InvEnd = false;
+
+    void Awake()
+    {
+        playercontroller = this;
+    }
     void Start()
     {
         playerMovement = GetComponent<CharacterMovement2D>();
@@ -38,10 +55,12 @@ public class PlayerController : MonoBehaviour
         playerFacing = GetComponent<CharacterFacing2D>();
         damageable = GetComponent<IDamageable>();
         damageable.DeathEvent += OnDeath;
+        spriteplayer = GetComponent<SpriteRenderer>();
         if (weaponObjet != null)
         {
             Weapon = weaponObjet.GetComponent<IWeapon>();
         }
+        ReiniciarContagemInvencivel();
     }
     private void OnDestroy() {
         if(damageable != null){
@@ -52,6 +71,56 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        ContInvencivel();
+        if(InvEnd)
+        {
+            PiscarPlayer();
+            StopPlayerOn();
+        }
+        else
+        {
+            RunPlayerOn();
+        }
+    }
+
+    void RunPlayerOn()
+    {
+        PlayerMovementRun(true);
+        //PlayerMovementCheck();
+        AttackButtonCheck();
+        JumpButtonClick();
+        playerMovement.UnCrouch();
+    }
+
+    void StopPlayerOn()
+    {
+        PlayerMovementRun(false);
+        playerMovement.Crouch();
+
+    }
+    private void AttackButtonCheck()
+    {
+        /// <summary>
+        /// ATACAR
+        /// </summary>
+        if(Weapon != null && playerInput.IsAttackButtonDown()){
+            Weapon.Attack();
+        }
+    }
+    private void CrochButtonCheck()
+    {
+        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        /// <summary>
+        /// AGACHAR 
+        /// </summary>
+        if(playerInput.IsCrochButtonDown()){
+            playerMovement.Crouch();
+        }else if (playerInput.IsCrouchButtonUp()){
+            playerMovement.UnCrouch();
+        }
+    }
+    private void PlayerMovementCheck()
+    {
         /// <summary>
         /// MOVIMENTAÇÃO DO PERSONAGEM
         /// </summary>
@@ -59,6 +128,24 @@ public class PlayerController : MonoBehaviour
         Vector2 movementInput = playerInput.GetMovementInput();
         playerMovement.ProcessMovementInput(movementInput); /// TECLA PRESSIONADO
         playerFacing.UpdateFacing(movementInput);
+    }
+    private void PlayerMovementRun(bool check)
+    {
+        Vector2 movementInput;
+        if (check)
+        {
+            movementInput = new Vector2(1, 0);
+        }
+        else
+        {
+            movementInput = new Vector2(0, 0);
+        }
+        playerMovement.ProcessMovementInput(movementInput); /// TECLA PRESSIONADO
+        playerFacing.UpdateFacing(movementInput);
+    }
+
+    private void JumpButtonClick()
+    {
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         /// <summary>
         /// PULO DO JOGADOR
@@ -70,22 +157,6 @@ public class PlayerController : MonoBehaviour
             playerMovement.UpdateJumpAbort();
         }
 
-        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        /// <summary>
-        /// AGACHAR 
-        /// </summary>
-        if(playerInput.IsCrochButtonDown()){
-            playerMovement.Crouch();
-        }else if (playerInput.IsCrouchButtonUp()){
-            playerMovement.UnCrouch();
-        }
-
-        /// <summary>
-        /// ATACAR
-        /// </summary>
-        if(Weapon != null && playerInput.IsAttackButtonDown()){
-            Weapon.Attack();
-        }
     }
 
     private void FixedUpdate() {
@@ -98,11 +169,47 @@ public class PlayerController : MonoBehaviour
         //
     }
 
-    private void OnDeath(){
+    void PiscarPlayer()
+    {
+        time += Time.deltaTime;
+        if (time >= time2)
+        {
+            spriteplayer.enabled = true;
+            time = 0;
+        } 
+        else
+        {
+            spriteplayer.enabled = false;
+        }     
+    }
 
+    void ContInvencivel()
+    {
+        inv1 += Time.deltaTime;
+        if (inv1 >= inv2)
+        {
+            InvEnd = false;
+        }
+        if(!InvEnd)
+        {
+            spriteplayer.enabled = true;
+        }
+    }
+
+    public void ReiniciarContagemInvencivel()
+    {
+        inv1 = 0;
+        InvEnd = true;
+    }
+    private void OnDeath(){
         playerMovement.StopImmediately(); //StopImmediately <Chama a função que para a movimentação do jogador>
         enabled = false; //Para de tocar a função update
+    }
+
+    public void NextLevel()
+    {
 
     }
+
 
 }

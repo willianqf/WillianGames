@@ -12,7 +12,14 @@ public class DeathOnDamage : MonoBehaviour, IDamageable
     }
     public void TakeDamage(int damage)
     {
+        StartCoroutine(IsDeadTime());
+        DeathEvent.Invoke(); // MATA O PLAYER
+    }
+
+    IEnumerator IsDeadTime()
+    {
         IsDead = true;
-        DeathEvent.Invoke();
+        yield return new WaitForSeconds(0.1f);
+        IsDead = false;
     }
 }

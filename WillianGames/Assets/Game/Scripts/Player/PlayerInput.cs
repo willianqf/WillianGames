@@ -53,7 +53,10 @@ public class PlayerInput : MonoBehaviour
         bool isMobileButtonDown = CrossPlatformInputManager.GetAxisRaw(PlayerInputConstants.Vertical) >= 0;
         return isKeyboardButtonDown && isMobileButtonDown;
     }
-
+    /// <summary>
+    /// DETECTA BOTÃO DE ATACAR DO JOGADOR
+    /// </summary>
+    /// <returns></returns>
     public bool IsAttackButtonDown(){
         bool isKeyboardButtonDown = Input.GetKeyDown(KeyCode.K);
         bool isMobileButtonDown = CrossPlatformInputManager.GetButtonDown(PlayerInputConstants.Attack);

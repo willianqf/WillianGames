@@ -66,25 +66,25 @@ MonoBehaviour:
     />\r\n          <PrioritySelectorNode id=\"7\" />\r\n          <ConditionEvalNode
     id=\"8\" />\r\n          <ConditionEvalNode id=\"9\" />\r\n        </nodes>\r\n     
     </_nodes>\r\n    </BehaviorTree>\r\n    <PrioritySelectorNode id=\"7\">\r\n     
-    <_data>\r\n        <data breakpoint=\"0\" selected=\"False\" position=\"226 200\"
-    name=\"Priority Selector\" description=\"\" cardinality=\"1\" hasParent=\"False\">\r\n         
+    <_data>\r\n        <data breakpoint=\"0\" selected=\"False\" position=\"449.5
+    345.25\" name=\"Priority Selector\" description=\"\" cardinality=\"1\" hasParent=\"False\">\r\n         
     <BehaviorTree id=\"0\" />\r\n          <PrioritySelectorNode id=\"7\" />\r\n       
     </data>\r\n      </_data>\r\n    </PrioritySelectorNode>\r\n    <ConditionEvalNode
-    id=\"8\">\r\n      <_data>\r\n        <data breakpoint=\"0\" selected=\"True\"
-    position=\"298 786\" name=\"Game/Perception/IsTargetVisible\" description=\"Eval\"
+    id=\"8\">\r\n      <_data>\r\n        <data breakpoint=\"0\" selected=\"False\"
+    position=\"526 928\" name=\"Game/Perception/IsTargetVisible\" description=\"Eval\"
     cardinality=\"1\" hasParent=\"True\">\r\n          <BehaviorTree id=\"0\" />\r\n         
     <ConditionEvalNode id=\"8\" />\r\n          <PrioritySelectorNode id=\"7\" />\r\n       
     </data>\r\n      </_data>\r\n    </ConditionEvalNode>\r\n    <ActionNode id=\"6\">\r\n     
-    <_data>\r\n        <data breakpoint=\"0\" selected=\"False\" position=\"120 382\"
+    <_data>\r\n        <data breakpoint=\"0\" selected=\"False\" position=\"348 524\"
     name=\"Game/ChaseTarget\" description=\"\" cardinality=\"0\" hasParent=\"False\">\r\n         
     <BehaviorTree id=\"0\" />\r\n          <ActionNode id=\"6\" />\r\n        </data>\r\n     
     </_data>\r\n    </ActionNode>\r\n    <ConditionEvalNode id=\"9\">\r\n      <_data>\r\n       
-    <data breakpoint=\"0\" selected=\"False\" position=\"812 784\" name=\"AlwaysTrue\"
+    <data breakpoint=\"0\" selected=\"False\" position=\"1031.5 912.75\" name=\"AlwaysTrue\"
     description=\"Eval\" cardinality=\"1\" hasParent=\"True\">\r\n          <BehaviorTree
     id=\"0\" />\r\n          <ConditionEvalNode id=\"9\" />\r\n          <PrioritySelectorNode
     id=\"7\" />\r\n        </data>\r\n      </_data>\r\n    </ConditionEvalNode>\r\n   
     <ActionNode id=\"5\">\r\n      <_data>\r\n        <data breakpoint=\"0\" selected=\"False\"
-    position=\"406 384\" name=\"Game/Patrol\" description=\"\" cardinality=\"0\"
+    position=\"625.5 512.75\" name=\"Game/Patrol\" description=\"\" cardinality=\"0\"
     hasParent=\"False\">\r\n          <BehaviorTree id=\"0\" />\r\n          <ActionNode
     id=\"5\" />\r\n        </data>\r\n      </_data>\r\n    </ActionNode>\r\n  </editorInfo>\r\n</BehaviorBricks>"
   zoom: 0.5

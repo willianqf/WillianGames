@@ -59,6 +59,8 @@ public class EnemyAIController : MonoBehaviour
     */
     private void OnDeath()
     {
+        BoxCollider2D box = GetComponent<BoxCollider2D>();
+        box.enabled = false;
         enabled = false;
         enemyMovement.StopImmediately();
         damager.gameObject.SetActive(false);
